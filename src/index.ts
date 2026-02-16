@@ -1,6 +1,6 @@
 import { Telegraf, session } from 'telegraf';
 import type { BotContext, SessionData } from './types/context';
-import { startCommand } from './commands';
+import { startCommand, leaderboardCommand } from './commands';
 import { answerAction } from './handlers';
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -22,6 +22,7 @@ bot.use(
 
 // Commands
 bot.start((ctx) => startCommand(ctx));
+bot.command('leaderboard', (ctx) => leaderboardCommand(ctx));
 
 // Actions
 bot.action(/^ANSWER_(.+)$/, answerAction);
