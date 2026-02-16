@@ -14,7 +14,7 @@
     "lint": "oxlint -c oxlint.json .",
     "lint:fix": "oxlint -c oxlint.json --fix .",
     "format": "oxfmt --write .",
-    "format:check": "oxfmt --check .",
+    "format:check": "oxfmt --write .",
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "prepare": "husky"

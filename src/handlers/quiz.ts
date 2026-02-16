@@ -60,14 +60,31 @@ async function showResults(ctx: BotContext, answers: UserAnswer[], score: number
 
   await Bun.sleep(1000);
 
-  const percentage = Math.round((score / total) * 100);
-  let emoji: string;
-  if (percentage === 100) emoji = '🏆';
-  else if (percentage >= 70) emoji = '🌟';
-  else if (percentage >= 50) emoji = '👍';
-  else emoji = '💪';
+  const header = formatHeader(score, total);
+  const summary = formatSummary(answers);
+  await ctx.telegram.editMessageText(
+    chatId,
+    msgId,
+    undefined,
+    `${header}\n\n${'─'.repeat(25)}\n\n${summary}`
+  );
+}
 
-  const summary = answers
+export function getResultEmoji(percentage: number): string {
+  if (percentage === 100) return '🏆';
+  if (percentage >= 70) return '🌟';
+  if (percentage >= 50) return '👍';
+  return '💪';
+}
+
+export function formatHeader(score: number, total: number): string {
+  const percentage = Math.round((score / total) * 100);
+  const emoji = getResultEmoji(percentage);
+  return `${emoji} Quiz Complete! ${emoji}\n\nScore: ${score}/${total} (${percentage}%)`;
+}
+
+export function formatSummary(answers: UserAnswer[]): string {
+  return answers
     .map((a, i) => {
       const icon = a.isCorrect ? '✅' : '❌';
       const line = `${icon} ${i + 1}. ${a.question}`;
@@ -75,12 +92,4 @@ async function showResults(ctx: BotContext, answers: UserAnswer[], score: number
       return `${line}\n     Your answer: ${a.selected}\n     Correct: ${a.correct}`;
     })
     .join('\n\n');
-
-  const header = `${emoji} Quiz Complete! ${emoji}\n\nScore: ${score}/${total} (${percentage}%)`;
-  await ctx.telegram.editMessageText(
-    chatId,
-    msgId,
-    undefined,
-    `${header}\n\n${'─'.repeat(25)}\n\n${summary}`
-  );
 }
