@@ -1,5 +1,6 @@
 import { Markup } from 'telegraf';
 import type { BotContext, UserAnswer } from '../types/context';
+import { saveScore } from '../db';
 
 export function sendQuestion(ctx: BotContext) {
   const { quiz } = ctx.session;
@@ -60,13 +61,23 @@ async function showResults(ctx: BotContext, answers: UserAnswer[], score: number
 
   await Bun.sleep(1000);
 
+  if (ctx.from) {
+    saveScore({
+      user_id: ctx.from.id,
+      username: ctx.from.username ?? null,
+      first_name: ctx.from.first_name,
+      score,
+      total,
+    });
+  }
+
   const header = formatHeader(score, total);
   const summary = formatSummary(answers);
   await ctx.telegram.editMessageText(
     chatId,
     msgId,
     undefined,
-    `${header}\n\n${'─'.repeat(25)}\n\n${summary}`
+    `${header}\n\n${'─'.repeat(25)}\n\n${summary}\n\nSee /leaderboard for rankings!`
   );
 }
 
