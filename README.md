@@ -1,15 +1,37 @@
 # telegram-quiz
 
-To install dependencies:
+A Telegram quiz bot built with [Telegraf](https://telegraf.js.org/) and [Bun](https://bun.sh).
+
+## Setup
 
 ```bash
 bun install
 ```
 
-To run:
+Create a `.env` file with your bot token:
 
-```bash
-bun run index.js
+```
+BOT_TOKEN=your_telegram_bot_token
 ```
 
-This project was created using `bun init` in bun v1.3.4. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+## Usage
+
+```bash
+# Development (with watch mode)
+bun run dev
+
+# Production
+bun run start
+```
+
+## Scripts
+
+| Command             | Description           |
+| ------------------- | --------------------- |
+| `bun run dev`       | Start with watch mode |
+| `bun run start`     | Start the bot         |
+| `bun run build`     | Build to `dist/`      |
+| `bun run lint`      | Lint with oxlint      |
+| `bun run format`    | Format with oxfmt     |
+| `bun run typecheck` | Type-check with tsc   |
+| `bun test`          | Run tests             |
