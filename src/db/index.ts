@@ -1,6 +1,7 @@
 import { Database } from 'bun:sqlite';
 
-const db = new Database('quiz.db');
+const dbPath = process.env.DB_PATH || 'quiz.db';
+const db = new Database(dbPath);
 
 db.run('PRAGMA journal_mode = WAL');
 db.run(`
