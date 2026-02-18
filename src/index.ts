@@ -1,6 +1,12 @@
 import { Telegraf, session } from 'telegraf';
 import type { BotContext, SessionData } from './types/context';
-import { startCommand, leaderboardCommand } from './commands';
+import {
+  startCommand,
+  beginQuiz,
+  leaderboardCommand,
+  BUTTON_START_QUIZ,
+  BUTTON_LEADERBOARD,
+} from './commands';
 import { answerAction } from './handlers';
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -23,6 +29,10 @@ bot.use(
 // Commands
 bot.start((ctx) => startCommand(ctx));
 bot.command('leaderboard', (ctx) => leaderboardCommand(ctx));
+
+// Reply keyboard button handlers
+bot.hears(BUTTON_START_QUIZ, (ctx) => beginQuiz(ctx));
+bot.hears(BUTTON_LEADERBOARD, (ctx) => leaderboardCommand(ctx));
 
 // Actions
 bot.action(/^ANSWER_(.+)$/, answerAction);
